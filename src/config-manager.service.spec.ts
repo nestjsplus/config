@@ -44,7 +44,7 @@ describe('ConfigService', () => {
       process.env = defaultProcEnv;
       const configOpts = {
         useFile: 'testconfigs/config/test1.env',
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -64,7 +64,7 @@ describe('ConfigService', () => {
       process.env = defaultProcEnv;
       const configOpts = {
         useFile: 'testconfigs/config/test2.env',
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -84,7 +84,7 @@ describe('ConfigService', () => {
       process.env = defaultProcEnv;
       const configOpts = {
         useFile: 'testconfigs/config/test3.env',
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -104,7 +104,7 @@ describe('ConfigService', () => {
       process.env = defaultProcEnv;
       const configOpts = {
         useFile: 'testconfigs/config/test4.env',
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -127,7 +127,7 @@ describe('ConfigService', () => {
       process.env = defaultProcEnv;
       const configOpts = {
         useFile: 'testconfigs/config/test5.env',
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -155,7 +155,7 @@ describe('ConfigService', () => {
       process.env = { NODE_ENV: 'test', TEST4: 'FOURFOURFOUR' };
       const configOpts = {
         useFile: 'testconfigs/config/test1.env',
-        exitOnError: false,
+        onError: 'throw',
         allowExtras: true,
       };
       class CfgService extends ConfigManager {
@@ -172,7 +172,7 @@ describe('ConfigService', () => {
       process.env = { NODE_ENV: 'test', TEST1: 'def' };
       const configOpts = {
         useFile: 'testconfigs/config/test1.env',
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -188,7 +188,7 @@ describe('ConfigService', () => {
       process.env = { NODE_ENV: 'test', TEST1: 'def' };
       const configOpts = {
         useFile: 'testconfigs/config/test1.env',
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -211,7 +211,7 @@ describe('ConfigService', () => {
       process.env = defaultProcEnv;
       const configOpts = {
         useFile: 'testconfigs/config/test1.env',
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -234,7 +234,7 @@ describe('ConfigService', () => {
       process.env = { NODE_ENV: 'test', TEST4: 'FOUR' };
       const configOpts = {
         useFile: 'testconfigs/config/test1.env',
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -257,7 +257,7 @@ describe('ConfigService', () => {
       process.env = defaultProcEnv;
       const configOpts = {
         useFile: 'testconfigs/config/test6.env',
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -285,7 +285,7 @@ describe('ConfigService', () => {
       process.env = defaultProcEnv;
       const configOpts = {
         useFile: 'testconfigs/config/test7.env',
-        exitOnError: false,
+        onError: 'throw',
         allowExtras: true,
       };
       class CfgService extends ConfigManager {
@@ -309,7 +309,7 @@ describe('ConfigService', () => {
       process.env = defaultProcEnv;
       const configOpts = {
         useFile: 'testconfigs/config/test7.env',
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -327,7 +327,7 @@ describe('ConfigService', () => {
       process.env = defaultProcEnv;
       const configOpts = {
         useFile: 'testconfigs/config/test7.env',
-        exitOnError: false,
+        onError: 'throw',
         allowExtras: false,
       };
       class CfgService extends ConfigManager {
@@ -344,6 +344,76 @@ describe('ConfigService', () => {
   });
 
   /**
+   *  Test onError options
+   */
+
+  describe('Test onError options', () => {
+    test('Should report errors and continue', async () => {
+      process.env = defaultProcEnv;
+      const configOpts = {
+        useFile: 'testconfigs/config/test1.env',
+        onError: 'continue',
+        allowExtras: false,
+      };
+      class CfgService extends ConfigManager {
+        provideConfigSpec() {
+          return config1;
+        }
+      }
+      const configService = new CfgService(configOpts);
+      const TEST1 = configService.get('TEST1');
+      expect(TEST1).toEqual('abc');
+    });
+
+    test('Should exit on error when onError = "throw"', async () => {
+      process.env = defaultProcEnv;
+      const configOpts = {
+        useFile: 'testconfigs/config/test7.env',
+        onError: 'exit',
+        allowExtras: false,
+      };
+      class CfgService extends ConfigManager {
+        provideConfigSpec() {
+          return config1;
+        }
+      }
+      const configService = new CfgService(configOpts);
+      expect(process.exit).toBeCalled();
+    });
+
+    test('Should exit on error when onError is omitted', async () => {
+      process.env = defaultProcEnv;
+      const configOpts = {
+        useFile: 'testconfigs/config/test7.env',
+        allowExtras: false,
+      };
+      class CfgService extends ConfigManager {
+        provideConfigSpec() {
+          return config1;
+        }
+      }
+      const configService = new CfgService(configOpts);
+      expect(process.exit).toBeCalled();
+    });
+
+    test('Should exit on error when onError is invalid', async () => {
+      process.env = defaultProcEnv;
+      const configOpts = {
+        useFile: 'testconfigs/config/test7.env',
+        onError: 'junk',
+        allowExtras: false,
+      };
+      class CfgService extends ConfigManager {
+        provideConfigSpec() {
+          return config1;
+        }
+      }
+      const configService = new CfgService(configOpts);
+      expect(process.exit).toBeCalled();
+    });
+  });
+
+  /**
    *  Test useEnv method
    */
   describe('Test useEnv', () => {
@@ -354,7 +424,7 @@ describe('ConfigService', () => {
         useEnv: {
           folder: 'testconfigs',
         },
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -373,7 +443,7 @@ describe('ConfigService', () => {
         useEnv: {
           folder: 'testconfigs',
         },
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -391,7 +461,7 @@ describe('ConfigService', () => {
         useEnv: {
           folder: 'testconfigs',
         },
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -415,7 +485,7 @@ describe('ConfigService', () => {
       }
       const configOpts = {
         useFunction: configResolver,
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -435,7 +505,7 @@ describe('ConfigService', () => {
       const configOpts = {
         envKey: 'ENVIRONMENT',
         useFunction: configResolver,
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -456,7 +526,7 @@ describe('ConfigService', () => {
       process.env = defaultProcEnv;
       const configOpts = {
         useFile: 'testconfigs/config/nonsense.env',
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -479,7 +549,7 @@ describe('ConfigService', () => {
         useEnv: {
           folder: '',
         },
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -500,7 +570,7 @@ describe('ConfigService', () => {
         useEnv: {
           folder: 'srcx',
         },
-        exitOnError: false,
+        onError: 'throw',
         allowMissingEnvFile: true,
       };
       class CfgService extends ConfigManager {
@@ -522,7 +592,7 @@ describe('ConfigService', () => {
         useEnv: {
           folder: '',
         },
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -545,7 +615,7 @@ describe('ConfigService', () => {
         useEnv: {
           folder: '/nowhere',
         },
-        exitOnError: false,
+        onError: 'throw',
         allowMissingEnvFile: true,
       };
       class CfgService extends ConfigManager {
@@ -567,7 +637,7 @@ describe('ConfigService', () => {
       const configOpts = {
         envKey: 'USELESS_KEY',
         useFunction: configResolver,
-        exitOnError: false,
+        onError: 'throw',
       };
       class CfgService extends ConfigManager {
         provideConfigSpec() {
@@ -591,7 +661,7 @@ describe('ConfigService', () => {
       const configOpts = {
         envKey: 'USELESS_KEY',
         useFunction: configResolver,
-        exitOnError: false,
+        onError: 'throw',
         allowMissingEnvFile: true,
       };
       class CfgService extends ConfigManager {

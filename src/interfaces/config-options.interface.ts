@@ -54,7 +54,7 @@ export interface ConfigOptions {
    *
    * If `false`, ConfigManager will throw an exception on error.
    */
-  exitOnError?: boolean;
+  onError?: string;
 
   /**
    * If false, throws/exits on missing `.env` file

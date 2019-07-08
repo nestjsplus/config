@@ -11,12 +11,12 @@ import {
   MissingEnvFileError,
 } from './errors';
 import { AbstractConfigManager } from './abstract.config';
-import { EnvDictionary } from './interfaces';
+import { EnvHash } from './interfaces';
 
 @Injectable()
 export class ConfigManager extends AbstractConfigManager {
-  // dictionary that contains our config from the environment after validation
-  private envConfig: EnvDictionary | void;
+  // hash that contains our config from the environment after validation
+  private envConfig: EnvHash | void;
 
   // the resolved file path of the `.env` file
   private envFilePath: string;
@@ -100,13 +100,16 @@ export class ConfigManager extends AbstractConfigManager {
       }
 
       this.processConfigErrors(missingKeyErrors, validationErrorMessages);
-      if (!this.options.exitOnError) {
+      if (this.options.onError === 'throw') {
+        this.logger.error(
+          'Invalid configuration -- see log file and / or Exception for details',
+        );
         throw new InvalidConfigurationError(
           missingKeyErrors,
           validationErrorMessages,
         );
       } else {
-        process.exit(0);
+        this.handleFatalError('Invalid configuration');
       }
     } else {
       this.envConfig = validatedConfig;
@@ -132,12 +135,28 @@ export class ConfigManager extends AbstractConfigManager {
     }
 
     this.environment = process.env[environmentKey];
+
+    // a valid environment is required for all methods but useFile
     if (!this.options.useFile && !this.isValidEnvironment(this.environment)) {
       this.handleFatalError(`Bad environment key: ${this.options.envKey}`);
     }
     const fromEnvironment = process.env[environmentKey]
       ? `using ${environmentKey}`
       : 'using default';
+
+    if (!this.options.onError) {
+      this.options.onError = 'exit';
+    }
+
+    if (
+      this.options.onError &&
+      !['continue', 'throw', 'exit'].includes(this.options.onError)
+    ) {
+      this.logger.warn(
+        `Invalid onError value ('${this.options.onError}') specified in ConfigManagerModule.register().  Using 'exit' instead.`,
+      );
+      this.options.onError = 'exit';
+    }
 
     dbg.cfg('> cfg options: ', this.options);
     dbg.cfg(`> environment (${fromEnvironment}): ${this.environment}`);
@@ -220,9 +239,9 @@ export class ConfigManager extends AbstractConfigManager {
 
   /**
    * Load the env file at the given file path
-   * @returns {EnvDictionary} parsed config file
+   * @returns {EnvHash} parsed config file
    */
-  private loadEnvFile(): EnvDictionary {
+  private loadEnvFile(): EnvHash {
     dbg.cfg(clc.yellow('> Parsing dotenv config file: ', this.envFilePath));
 
     const config: any = dotenv.config({
@@ -254,7 +273,7 @@ export class ConfigManager extends AbstractConfigManager {
    * After checking the environment, we supply defaults for any required
    * vars that remain missing.
    *
-   * @param {envDictionary} loadedConfig - the envDictionary loaded from dotenv
+   * @param {envHash} loadedConfig - the envHash loaded from dotenv
    * @param {object} requiredConfig - map of env keys with boolean indicating
    *    whether each is required
    * @returns
@@ -388,7 +407,7 @@ export class ConfigManager extends AbstractConfigManager {
    */
   private processConfigErrors(missingKeys, validationErrors) {
     if (missingKeys.length > 0) {
-      this.logger.warn(
+      this.logger.error(
         `Configuration error.  The following required environment variables are missing: \n--> ${missingKeys.join(
           '\n--> ',
         )}`,
@@ -396,7 +415,7 @@ export class ConfigManager extends AbstractConfigManager {
     }
 
     if (validationErrors.length > 0) {
-      this.logger.warn(
+      this.logger.error(
         `Configuration error.  The following environment variables failed validation: \n--> ${validationErrors.join(
           '\n--> ',
         )}`,
@@ -420,18 +439,27 @@ export class ConfigManager extends AbstractConfigManager {
   /**
    * Handle fatal errors
    *
-   * exit process or throw exception
+   * exit process, throw exception, or continue
    *
    * @param {string} error message
    * @throws {exception}
    */
   private handleFatalError(message) {
-    // new Logger('ConfigService').error(message);
-    this.logger.error(message);
-    if (this.options.exitOnError) {
-      process.exit(0);
-    } else {
-      throw new Error(message);
+    switch (this.options.onError) {
+      case 'exit':
+        this.logger.error(`${message} -- App will now exit`);
+        process.exit(0);
+        break;
+      case 'throw':
+        this.logger.error(`${message} -- See exception for details`);
+        throw new Error(message);
+        break;
+      case 'continue':
+        this.logger.error(
+          `An error was encountered in configuration, but 'continue' was specified.`,
+        );
+        this.logger.error('This may cause unpredictable results!');
+        break;
     }
   }
 

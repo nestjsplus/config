@@ -1,2 +1,2 @@
 export * from './config-options.interface';
-export * from './env-dictionary.interface';
+export * from './env-hash.interface';
