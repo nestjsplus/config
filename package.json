@@ -1,6 +1,6 @@
 {
   "name": "nestjs-config-manager",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Flexible, Docker-friendly, Dotenv-based Configuration Module for NestJs",
   "main": "index.js",
   "scripts": {
@@ -27,42 +27,38 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "@nestjs/common": "^6.0.0",
-    "@nestjs/core": "^6.0.0",
-    "@nestjs/platform-express": "^6.0.0",
     "cli-color": "^1.4.0",
     "debug": "^4.1.1",
     "dotenv": "^8.0.0",
-    "joi": "^14.3.1",
-    "reflect-metadata": "^0.1.12",
-    "rimraf": "^2.6.2",
-    "rxjs": "^6.3.3"
+    "joi": "^14.3.1"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/johnbiundo/nestjs-config-manager"
   },
+  "bugs": "https://github.com/johnbiundo/nestjs-config-manager/issues",
   "peerDependencies": {
     "@nestjs/common": "^6.0.0"
   },
   "devDependencies": {
-    "@nestjs/common": "^6.0.0",
-    "@nestjs/core": "^6.0.0",
+    "@nestjs/common": "^6.4.1",
+    "@nestjs/core": "^6.4.1",
     "@nestjs/testing": "^6.0.0",
-    "@types/jest": "24.0.13",
-    "@types/node": "^10.12.18",
     "@types/dotenv": "^6.1.1",
+    "@types/jest": "24.0.13",
     "@types/joi": "^14.3.3",
-    "jest": "24.8.0",
-    "ts-jest": "24.0.2",
-    "reflect-metadata": "0.1.13",
-    "prettier": "^1.15.3",
-    "typescript": "3.4.3",
+    "@types/node": "^10.12.18",
     "concurrently": "^4.1.0",
+    "jest": "24.8.0",
     "nodemon": "^1.18.9",
+    "prettier": "^1.15.3",
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^2.6.3",
+    "ts-jest": "24.0.2",
     "ts-node": "8.1.0",
     "tsconfig-paths": "3.8.0",
     "tslint": "5.16.0",
+    "typescript": "3.4.3",
     "wait-on": "^3.2.0"
   },
   "jest": {
