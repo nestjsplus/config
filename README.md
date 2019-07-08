@@ -16,19 +16,22 @@
 </div>
 
 ## Top Features
-* Simply install, configure, set up a `dotenv` file and go
 * Docker-friendly: e.g., use `.env` files in dev/test, environment variables in production, or any combination
 * [Joi]()-based validation of environment variables
 * Completely dynamic and customizable determination of the name/location of your `.env` file
   * means: no code changes to handle unique configs per environment
 * Default values (i.e., optional environment variables with default values)
 * Trace how an environment variable was resolved (external environment, `.env` file or default) to help debug tricky problems between dev, test, production
+
 [Full Feature List]((https://github.com/johnbiundo/nestjs-config-manager/wiki/Features)
 
 ## Documentation
 [Why another NestJs configuration manager?](https://github.com/johnbiundo/nestjs-config-manager/wiki)
+
 [How it works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works)
+
 [Schemas](https://github.com/johnbiundo/nestjs-config-manager/wiki/Schemas)
+
 [Module Configuration Options](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options)
 
 ## Basic Usage - Read This First
