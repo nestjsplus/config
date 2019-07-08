@@ -52,6 +52,7 @@ in the rest of your application.  This approach affords you a great deal of flex
 
 Following these conventions, your `ConfigModule` might look like this:
 ```typescript
+// src/config/config.module.ts
 import { Module, Global } from '@nestjs/common';
 import { ConfigManagerModule } from 'nestjs-config-manager';
 import { ConfigService } from './config.service';
@@ -69,8 +70,10 @@ import { ConfigService } from './config.service';
 export class ConfigModule {}
 ```
 
-This "registers" the `ConfigManagerModule`, which is how you configure it.  This
-example explicitly provides a full path to the `.env` file.  The path is relative
+This imports and "registers" the `ConfigManagerModule`, which is how you configure it.  In this
+example, we explicitly provide a full path to the `.env` file. This is simple, but not terribly
+flexible.  We'll explore more flexible options below. When providing a static file path with
+`useFile`, the path is relative
 to the root directory for the project, or the root directory in which the app is
 running.  For example, if the app currently has a structure like:
 ```bash
@@ -85,12 +88,13 @@ myprojects
 └── package.json
 ```
 
-This would look for a `dotenv`-formatted file in:
+This would result in looking for a `dotenv`-formatted file in:
 `myprojects/config/test.env`
 
 
-And your `ConfigService` might look like this:
+Your `ConfigService` might look like this:
 ```typescript
+// src/config/config.service.ts
 import { Injectable } from '@nestjs/common';
 import { ConfigManager } from 'nestjs-config-manager';
 import * as Joi from 'joi';
@@ -114,6 +118,10 @@ export class ConfigService extends ConfigManager {
         required: false,
         default: 5432,
       },
+      MY_NAME: {
+        validate: Joi.string(),
+        required: true,
+      }
       PORT: {
         validate: Joi.number()
           .min(3000)
@@ -126,10 +134,43 @@ export class ConfigService extends ConfigManager {
 }
 ```
 
-Your `ConfigService` (you can choose any name you want) is created as a derived
-class that extends the `ConfigManager` class from the package.  You **must**
+Your `ConfigService` (you can choose any name you want) is a **derived
+class** that extends the `ConfigManager` class provided by the package.  You **must**
 implement the `provideConfigSpec()` method. This is where you define your schema.
-Read [more about schemas here](https://github.com/johnbiundo/nestjs-config-manager/wiki)
+Read [more about schemas here](https://github.com/johnbiundo/nestjs-config-manager/wiki).
+
+With this in place, you can use your `ConfigService` anywhere in your project.  For example, assuming
+a `.env` file like:
+```bash
+// config/test.env
+FIRST_NAME=John
+.
+.
+.
+```
+
+A service like this:
+```typescript
+// src/app.service.ts
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from './config/config.service';
+
+@Injectable()
+export class AppService {
+  private userFirstName: string;
+
+  constructor(configService: ConfigService) {
+    this.userFirstName = configService.get<string>('FIRST_NAME'));
+  }
+
+  getHello(): string {
+    return `Hello ${this.userFirstName}`;
+  }
+}
+```
+
+Would return `Hello John` when run with this configuration.
+
 
 ## Change Log
 
