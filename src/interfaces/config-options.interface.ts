@@ -46,13 +46,17 @@ export interface ConfigOptions {
   allowExtras?: boolean;
 
   /**
-   * Should the ConfigManager force a process exit on any errors found
+   * How should the ConfigManager handle errors found during validation
    * (e.g., missing required env vars, env vars that fail validation, other
    * configuration errors such as `.env` file not found)?
    *
-   * Defaults to `true`.
-   *
-   * If `false`, ConfigManager will throw an exception on error.
+   * Options:
+   * - 'exit' - application/process exits (default)
+   * - 'throw' - throw `invalidConfigurationError` with
+   *   properties `missingKeys` and `validatinError` identifying the validation
+   *   failures.  Useful for running tests, as it's easier to trap than exit.
+   * - 'continue' - application bootstrapping continues; configuration is invalid,
+   *   so any application state that depends on a valid configuration may fail
    */
   onError?: string;
 
