@@ -41,6 +41,92 @@
 [Why another NestJs configuration manager?](https://github.com/johnbiundo/nestjs-config-manager/wiki)
 
 ## Basic Usage
-[More about **how** nestjs-config-manager works](https://github.com/johnbiundo/nestjs-config-manager/wiki)
+You can [read more about **how** nestjs-config-manager works](https://github.com/johnbiundo/nestjs-config-manager/wiki) if you want.
+
+The package has one global Nest module (`ConfigManagerModule`), and one main class (`ConfigManager`) that you'll need to work with.  The main idea is to create **your own** "ConfigService" (in the examples, we'll call it `ConfigService`), but you can call it whatever you want. You probably want this in its own module (in the examples,
+we'll call it `ConfigModule`), which you probably want to be global.  You'll then export your `ConfigService` for use
+in the rest of your application.  This approach affords you a great deal of flexibility:
+* Centralized setup of the `ConfigurationModule/Service`
+* Use Dependency Injection to gain access to the service wherever needed
+* Easily override/mock the service for testing
+
+Following these conventions, your `ConfigModule` might look like this:
+```typescript
+import { Module, Global } from '@nestjs/common';
+import { ConfigManagerModule } from 'nestjs-config-manager';
+import { ConfigService } from './config.service';
+
+@Global()
+@Module({
+  imports: [
+    ConfigManagerModule.register({
+      useFile: 'config/test.env',
+    }),
+  ],
+  providers: [ConfigService],
+  exports: [ConfigService],
+})
+export class ConfigModule {}
+```
+
+This "registers" the `ConfigManagerModule`, which is how you configure it.  This
+example explicitly provides a full path to the `.env` file.  The path is relative
+to the root directory for the project, or the root directory in which the app is
+running.  For example, if the app currently has a structure like:
+```bash
+myprojects
+├── src
+│   └── module1
+├── dist
+├── node_modules
+├── test
+├── config
+|   └── test.env
+└── package.json
+```
+
+This would look for a `dotenv`-formatted file in:
+`myprojects/config/test.env`
 
 
+And your `ConfigService` might look like this:
+```typescript
+import { Injectable } from '@nestjs/common';
+import { ConfigManager } from 'nestjs-config-manager';
+import * as Joi from 'joi';
+
+@Injectable()
+export class ConfigService extends ConfigManager {
+  provideConfigSpec() {
+    return {
+      DB_HOST: {
+        validate: Joi.string(),
+        required: true,
+      },
+      DB_USER: {
+        validate: Joi.string(),
+        required: true,
+      },
+      DB_PORT: {
+        validate: Joi.number()
+          .min(5000)
+          .max(65535),
+        required: false,
+        default: 5432,
+      },
+      PORT: {
+        validate: Joi.number()
+          .min(3000)
+          .max(500),
+        required: false,
+        default: 3000,
+      },
+    };
+  }
+}
+```
+
+Your `ConfigService` (you can choose any name you want) is created as a derived
+class that extends the `ConfigManager` class from the package.  You **must**
+implement the `provideConfigSpec()` method. This is where you define your schema.
+Read [more about schemas here](https://github.com/johnbiundo/nestjs-config-manager/wiki)
