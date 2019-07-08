@@ -23,7 +23,7 @@
 * Default values (i.e., optional environment variables with default values)
 * Trace how an environment variable was resolved (external environment, `.env` file or default) to help debug tricky problems between dev, test, production
 
-[Full Feature List]((https://github.com/johnbiundo/nestjs-config-manager/wiki/Features)
+[Full Feature List](https://github.com/johnbiundo/nestjs-config-manager/wiki/Features)
 
 ## Documentation
 [Why another NestJs configuration manager?](https://github.com/johnbiundo/nestjs-config-manager/wiki)
@@ -34,14 +34,13 @@
 
 [Module Configuration Options](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options)
 
-## Basic Usage - Read This First
-You can [read more about **how** nestjs-config-manager works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works) if you want.
+## Quick Start - Read This First
+You can [read more about **how** nestjs-config-manager works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works) if you want. But this section should get you started quickly.
 
-The package has one global Nest module (`ConfigManagerModule`), and one main class (`ConfigManager`) that you'll need to work with.  The main idea is to create **your own** "ConfigService" (in the examples, we'll call it `ConfigService`), but you can call it whatever you want. You probably want this in its own module (in the examples,
-we'll call it `ConfigModule`), which you probably want to be global.  You'll then export your `ConfigService` for use
-in the rest of your application.  This approach affords you a great deal of flexibility:
+The package has one global Nest module (`ConfigManagerModule`), and one main class (`ConfigManager`) that you'll need to work with.  The main idea is to create **your own** *ConfigService* (in the examples, we'll call it `ConfigService`), but you can call it whatever you want. You probably want this in its own module (in the examples,
+we'll call it `ConfigModule`), which you probably want to be global.  You'll then *provide* your `ConfigService` for use in the rest of your application.  This approach affords you a great deal of flexibility:
 * Centralized setup of the `ConfigurationModule/Service`
-* Use Dependency Injection to gain access to the service wherever needed
+* Use Dependency Injection to provide the service wherever needed
 * Easily override/mock the service for testing
 
 Following these conventions, your `ConfigModule` might look like this:
@@ -64,10 +63,10 @@ import { ConfigService } from './config.service';
 export class ConfigModule {}
 ```
 
-This imports and "registers" the `ConfigManagerModule`, which is how you configure it.  In this
-example, we explicitly provide a full path to the `.env` file. This is simple, but not terribly
-flexible.  We'll explore more flexible options [below](Dynamic-env-file-example).
-When providing a static file path with `useFile`, the path is relative
+This imports and *registers* the `ConfigManagerModule`, which is how you configure it.  In this
+example, we explicitly provide a full path to the `.env` file via the `useFile` configuration option.
+This is simple, but not terribly flexible.  We'll explore more flexible options
+[below](#Dynamic-env-file-example). When using a static file path with `useFile`, the path is relative
 to the root directory for the project, or the root directory in which the app is
 running.  For example, if the app currently has a structure like:
 ```bash
@@ -112,7 +111,7 @@ export class ConfigService extends ConfigManager {
         required: false,
         default: 5432,
       },
-      MY_NAME: {
+      FIRST_NAME: {
         validate: Joi.string(),
         required: true,
       }
@@ -191,9 +190,10 @@ DB_PASS=testdbpass
 The `useFile()` method of configuration shown above won't work for this. You need a way to read a **different**
 `.env` file for each environment. A typical approach is to use a **specific** environment variable (typically
 `NODE_ENV`, though you can choose whatever you want) to indicate what the active environment is.  For example, when
-running in *development*, you'd have `NODE_ENV` equal to `development`, and in *test*, it would equal `test`.
+running in *development*, you'd have `NODE_ENV` equal to `development`, and in *test*,
+`NODE_ENV`'s value would equal `test`.
 
-Based on this, you can use the `useEnv` method of configuring the `ConfigManagerModule`. The `useEnv` method is described in the [Module Configuration Options]() section, but a simple example is shown here.
+Based on this, you can use the `useEnv` method of configuring the `ConfigManagerModule`. The `useEnv` method is described in the [Module Configuration Options](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options#Basic-dynamic-configuration) section, but a simple example is shown below.
 
 To accommodate this requirement, we'd modify the way we register the `ConfigManagerModule` as follows, replacing
 `useFile` with `useEnv`:
@@ -247,7 +247,7 @@ export class ConfigModule {}
 ## Completely custom env file location
 The `useEnv` method provides significant flexibility, but more complex structures require an even **more** flexible
 approach. To handle arbitrarily complex environments, a third method, `useFunction`, is available to write custom
-JavaScript code to generate the appropriate path and filename dynamically.  This is covered in [Using a custom function](ttps://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options#Using-a-custom-function).
+JavaScript code to generate the appropriate path and filename dynamically.  This is covered in [Using a custom function](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options#Using-a-custom-function).
 
 
 ## Change Log
