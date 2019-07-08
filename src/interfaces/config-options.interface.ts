@@ -2,24 +2,26 @@ export interface ConfigOptions {
   /**
    * Name of the environment variable used to determine the current
    * `environment`.  Defaults to `NODE_ENV`.  For example, if `NODE_ENV` has
-   * a current value of `production`, the ConfigManager will look for a file
-   * named `production.env`.
+   * a current value of `production`, and you're using the `useEnv` method,
+   * the ConfigManager will look for a file named `production.env`.
    *
-   * Specify any valid environment variable, such as `ENVIRONMENT`, to provide
+   * The useFunction method passes the value of `environment` so that it may
+   * be used in constructing a custom `.env` file name.
+   *
+   * Specify any valid environment variable, such as `MYENVIRONMENT`, to provide
    * an alternative source for deriving the current `environment` value.
    */
-
   envKey?: string;
+
   /**
    * Name a file to use explicitly for the `.env` file.  If specified,
    * the `useEnv` option is ignored
    */
-
   useFile?: string;
+
   /**
    * Use an environment variable to locate the `.env` file.
    */
-
   useEnv?: {
     /**
      * Name of the folder, relative to the project root directory, containing
