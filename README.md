@@ -130,3 +130,19 @@ Your `ConfigService` (you can choose any name you want) is created as a derived
 class that extends the `ConfigManager` class from the package.  You **must**
 implement the `provideConfigSpec()` method. This is where you define your schema.
 Read [more about schemas here](https://github.com/johnbiundo/nestjs-config-manager/wiki)
+
+## Change Log
+
+See [Changelog](CHANGELOG.md) for more information.
+
+## Contributing
+
+Contributions welcome! See [Contributing](CONTRIBUTING.md).
+
+## Author
+
+* **John Biundo (Y Prospect)**
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
