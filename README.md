@@ -41,7 +41,7 @@
 [Why another NestJs configuration manager?](https://github.com/johnbiundo/nestjs-config-manager/wiki)
 
 ## Basic Usage
-You can [read more about **how** nestjs-config-manager works](https://github.com/johnbiundo/nestjs-config-manager/wiki) if you want.
+You can [read more about **how** nestjs-config-manager works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works) if you want.
 
 The package has one global Nest module (`ConfigManagerModule`), and one main class (`ConfigManager`) that you'll need to work with.  The main idea is to create **your own** "ConfigService" (in the examples, we'll call it `ConfigService`), but you can call it whatever you want. You probably want this in its own module (in the examples,
 we'll call it `ConfigModule`), which you probably want to be global.  You'll then export your `ConfigService` for use
@@ -137,7 +137,7 @@ export class ConfigService extends ConfigManager {
 Your `ConfigService` (you can choose any name you want) is a **derived
 class** that extends the `ConfigManager` class provided by the package.  You **must**
 implement the `provideConfigSpec()` method. This is where you define your schema.
-Read [more about schemas here](https://github.com/johnbiundo/nestjs-config-manager/wiki).
+Read [more about schemas here](https://github.com/johnbiundo/nestjs-config-manager/wiki/Schemas).
 
 With this in place, you can use your `ConfigService` anywhere in your project.  For example, assuming
 a `.env` file like:

@@ -18,7 +18,7 @@ npm test
 
 ## Code Style
 
-We use [Prettier](https://www.npmjs.com/package/standard) and tslint to maintain code style and best practices.
+We use [Prettier](https://prettier.io/) and tslint to maintain code style and best practices.
 Please make sure your PR adheres to the guides by running:
 
 ```
