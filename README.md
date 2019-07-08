@@ -1,4 +1,4 @@
-<h1 align="center">Nest Configuration Manager</h1>
+<h1 align="center">NestJs Configuration Manager</h1>
 
 <h3 align="center">Flexible, Docker-friendly, Dotenv-based Configuration Module for NestJs</h3>
 
@@ -20,7 +20,10 @@
 * Choice to allow or prohibit **extra** environment variables (e.g., allow/reject `.env` file with variables not matching schema)
 * Uses [`debug`]() to let you see inside the module at runtime
 
-## Installation
-NPM
+## Install
+
+npm
+
 `npm install nestjs-config-manager`
 
+## Usage
