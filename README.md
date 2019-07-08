@@ -21,6 +21,7 @@
 * Docker-friendly: e.g., use `.env` files in dev/test, environment variables in production, or any combination
 * [Joi]()-based validation of environment variables
 * Completely dynamic and customizable determination of the name/location of your `.env` file
+  * means: no code changes to handle unique configs per environment
 * Default values (i.e., optional environment variables with default values)
 * Type-safe (e.g., `configMgr.get<number>('PORT')` returns a number (no more `parseInt()`)
 * Easy to layer your own config service on top of the Configuration Manager to provide features like
@@ -28,15 +29,18 @@
   * name spacing (e.g., `configMgr.get('DB.PASSWORD'))`
 * Dynamic module enables easy configuration
 * Dynamic module allows easy override for testing
-* Uses system logger (i.e., respects overrides)
 * Trace how an environment variable was resolved (external environment, `.env` file or default) to help debug tricky problems between dev, test, production
 * Choice to allow or prohibit **extra** environment variables (e.g., allow/reject `.env` file with variables not matching schema)
+* Choice to shut down the app (`process.exit`), throw an exception, or continue on configuration errors
+  * exception has detailed validation errors for easy testing
+* Uses system logger (i.e., respects overrides)
 * Uses [`debug`]() to let you see inside the module at runtime
+* Defined as a `Global` Nest module for default import into any module
 
-## Install
+## Documentation
+[Why another NestJs configuration manager?](https://github.com/johnbiundo/nestjs-config-manager/wiki)
 
-npm
+## Basic Usage
+[More about **how** nestjs-config-manager works](https://github.com/johnbiundo/nestjs-config-manager/wiki)
 
-`npm install nestjs-config-manager`
 
-## Usage
