@@ -217,9 +217,11 @@ import { ConfigService } from './config.service';
 export class ConfigModule {}
 ```
 
-If, instead of `NODE_ENV` we wanted to use an environment variable like `MY_ENVIRONMENT` to signify which environment
-we're running (e.g., `MY_ENVIRONMENT` is equal to `development` when we're in our development environment), we'd
-identify that environment variable using the option `envKey`, as shown below:
+If, instead of `NODE_ENV` we wanted to use an environment variable like
+`MY_ENVIRONMENT` to signify which environment we're running (e.g.,
+`MY_ENVIRONMENT` is equal to `development` when we're in our development
+environment), we'd identify that environment variable using the option `envKey`,
+as shown below:
 ```typescript
 // src/config/config.module.ts
 import { Module, Global } from '@nestjs/common';
@@ -243,9 +245,12 @@ export class ConfigModule {}
 ```
 
 ## Completely custom env file location
-The `useEnv` method provides significant flexibility, but more complex structures require an even **more** flexible
-approach. To handle arbitrarily complex environments, a third method, `useFunction`, is available to write custom
-JavaScript code to generate the appropriate path and filename dynamically.  This is covered in [Using a custom function](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options#Using-a-custom-function).
+The `useEnv` method provides significant flexibility, but more complex structures
+require an even **more** flexible approach. To handle arbitrarily complex
+environments, a third method, `useFunction`, is available to write custom
+JavaScript code to generate the appropriate path and filename dynamically.
+This is covered in
+[Using a custom function](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options#The-useFunction-option).
 
 
 ## Change Log
