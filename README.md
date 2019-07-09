@@ -16,7 +16,7 @@
 </div>
 
 ## Top Features
-* Docker-friendly: e.g., use `.env` files in dev/test, environment variables in production, or any combination
+* [Docker-friendly](https://github.com/johnbiundo/nestjs-config-manager/wiki/Docker): e.g., use `.env` files in dev/test, environment variables in production, or any combination
 * [@hapi/joi](https://github.com/hapijs/joi)-based validation of environment variables
 * Completely dynamic and customizable determination of the name/location of your `.env` file
   * means: no code changes to handle unique configs per environment
@@ -34,7 +34,7 @@
 ## Quick Start - Read This First
 You can [read more about **how** nestjs-config-manager works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works) if you want. But this section should get you started quickly.
 
-The package has one global Nest module (`ConfigManagerModule`), and one main class (`ConfigManager`) that you'll need to work with.  The main idea is to create **your own** *ConfigService* (in the examples, we'll call it `ConfigService`), but you can call it whatever you want. You probably want this in its own module (in the examples,
+The package has one global Nest module (`ConfigManagerModule`), and one main class (`ConfigManager`) that you'll need to work with.  The main idea is to create **your own** *ConfigService* (in the examples, we'll call it `ConfigService`, but you can call it whatever you want). You probably want this in its own module (in the examples,
 we'll call it `ConfigModule`), which you probably want to be global.  You'll then *provide* your `ConfigService` for use in the rest of your application.  This approach affords you a great deal of flexibility:
 * Centralized setup of the `ConfigurationModule/Service`
 * Use Dependency Injection to provide the service wherever needed
@@ -60,8 +60,9 @@ import { ConfigService } from './config.service';
 export class ConfigModule {}
 ```
 
-This imports and *registers* the `ConfigManagerModule`, which is how you configure it.  In this
-example, we explicitly provide a full path to the `.env` file via the `useFile` configuration option.
+This imports and *registers* the `ConfigManagerModule`. The `register()` method is how you
+[configure the module](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options).
+In this example, we explicitly provide a full path to the `.env` file via the `useFile` configuration option.
 This is simple, but not terribly flexible.  We'll explore more flexible options
 [below](#Dynamic-env-file-example). When using a static file path with `useFile`, the path is relative
 to the root directory for the project, or the root directory in which the app is
