@@ -26,13 +26,10 @@
 [Full Feature List](https://github.com/johnbiundo/nestjs-config-manager/wiki/Features)
 
 ## Documentation
-[Why another NestJs configuration manager?](https://github.com/johnbiundo/nestjs-config-manager/wiki)
-
-[How it works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works)
-
-[Schemas](https://github.com/johnbiundo/nestjs-config-manager/wiki/Schemas)
-
-[Module Configuration Options](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options)
+- [Why another NestJs configuration manager?](https://github.com/johnbiundo/nestjs-config-manager/wiki)
+- [How it works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works)
+- [Schemas](https://github.com/johnbiundo/nestjs-config-manager/wiki/Schemas)
+- [Module Configuration Options](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options)
 
 ## Quick Start - Read This First
 You can [read more about **how** nestjs-config-manager works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works) if you want. But this section should get you started quickly.
