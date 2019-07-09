@@ -17,7 +17,7 @@
 
 ## Top Features
 * Docker-friendly: e.g., use `.env` files in dev/test, environment variables in production, or any combination
-* [Joi]()-based validation of environment variables
+* [@hapi/joi](https://github.com/hapijs/joi)-based validation of environment variables
 * Completely dynamic and customizable determination of the name/location of your `.env` file
   * means: no code changes to handle unique configs per environment
 * Default values (i.e., optional environment variables with default values)
@@ -26,10 +26,10 @@
 [Full Feature List](https://github.com/johnbiundo/nestjs-config-manager/wiki/Features)
 
 ## Documentation
-- [Why another NestJs configuration manager?](https://github.com/johnbiundo/nestjs-config-manager/wiki)
+- [Why another NestJs configuration module?](https://github.com/johnbiundo/nestjs-config-manager/wiki)
 - [How it works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works)
 - [Schemas](https://github.com/johnbiundo/nestjs-config-manager/wiki/Schemas)
-- [Module Configuration Options](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options)
+- [Module configuration options](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options)
 
 ## Quick Start - Read This First
 You can [read more about **how** nestjs-config-manager works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works) if you want. But this section should get you started quickly.
@@ -257,8 +257,8 @@ Contributions welcome! See [Contributing](CONTRIBUTING.md).
 
 ## Author
 
-* **John Biundo (Y Prospect)**
+* **John Biundo (Y Prospect on [Discord](https://discord.gg/G7Qnnhy))**
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
