@@ -250,7 +250,7 @@ require an even **more** flexible approach. To handle arbitrarily complex
 environments, a third method, `useFunction`, is available to write custom
 JavaScript code to generate the appropriate path and filename dynamically.
 This is covered in
-[Using a custom function](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options#The-useFunction-option).
+[Using a custom function](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options#The-useFunction-method).
 
 
 ## Change Log
