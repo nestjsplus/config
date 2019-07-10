@@ -27,7 +27,7 @@
 
 ## Documentation
 - [Why another NestJs configuration module?](https://github.com/johnbiundo/nestjs-config-manager/wiki)
-- [API](https://github.com/johnbiundo/nestjs-config-manager/Api)
+- [API](https://github.com/johnbiundo/nestjs-config-manager/wiki/Api)
 - [How it works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works)
 - [Schemas](https://github.com/johnbiundo/nestjs-config-manager/wiki/Schemas)
 - [Module configuration options](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options)
@@ -52,7 +52,7 @@ import { ConfigService } from './config.service';
 @Module({
   imports: [
     ConfigManagerModule.register({
-      useFile: 'config/test.env',
+      useFile: 'config/development.env',
     }),
   ],
   providers: [ConfigService],
@@ -70,19 +70,19 @@ to the root directory for the project, or the root directory in which the app is
 running (in test and production environments).  For example, if the app currently
 has a structure like:
 ```bash
-myprojects
+myproject
 ├── src
 │   └── module1
 ├── dist
 ├── node_modules
 ├── test
 ├── config
-|   └── test.env
+|   └── development.env
 └── package.json
 ```
 
 This would result in the `ConfigManagerModule` looking for a `dotenv`-formatted file in:
-> `myprojects/config/test.env`
+> `myproject/config/development.env`
 
 
 Your `ConfigService` might look like this:
@@ -98,11 +98,8 @@ export class ConfigService extends ConfigManager {
     return {
       DB_HOST: {
         validate: Joi.string(),
-        required: true,
-      },
-      DB_USER: {
-        validate: Joi.string(),
-        required: true,
+        required: false,
+        default: 'localhost',
       },
       DB_PORT: {
         validate: Joi.number()
@@ -111,16 +108,17 @@ export class ConfigService extends ConfigManager {
         required: false,
         default: 5432,
       },
-      FIRST_NAME: {
+      DB_USERNAME: {
         validate: Joi.string(),
         required: true,
-      }
-      PORT: {
-        validate: Joi.number()
-          .min(3000)
-          .max(500),
-        required: false,
-        default: 3000,
+      },
+      DB_PASSWORD: {
+        validate: Joi.string(),
+        required: true,
+      },
+      DB_NAME: {
+        validate: Joi.string(),
+        required: true,
       },
     };
   }
@@ -135,8 +133,10 @@ Read [more about schemas here](https://github.com/johnbiundo/nestjs-config-manag
 With this in place, you can use your `ConfigService` anywhere in your project.  For example, assuming
 a `.env` file like:
 ```bash
-// config/test.env
-FIRST_NAME=John
+// myproject/config/development.env
+DB_USERNAME=john
+DB_PASSWORD=mypassword
+DB_NAME=mydb
 .
 .
 .
@@ -150,20 +150,20 @@ import { ConfigService } from './config/config.service';
 
 @Injectable()
 export class AppService {
-  private userFirstName: string;
+  private userName: string;
 
   constructor(configService: ConfigService) {
-    this.userFirstName = configService.get<string>('FIRST_NAME'));
+    this.userName = configService.get<string>('DB_USERNAME'));
   }
 
   getHello(): string {
-    return `Hello ${this.userFirstName}`;
+    return `Hello ${this.userName}`;
   }
 }
 ```
 
 Would return
-> `Hello John`
+> `Hello john`
 > when run with this configuration.
 
 ## Dynamic env file location example
@@ -178,18 +178,20 @@ For *development*:
 
 ```bash
 // myproject/config/development.env
-DB_USER=devdbuser
-DB_PASS=devdbpass
+DB_USERNAME=devdbuser
+DB_PASSWORD=devdbpass
+DB_NAME=devdb
 ```
 
 For *test*:
 ```bash
 // myproject/config/test.env
-DB_USER=testdbuser
-DB_PASS=testdbpass
+DB_USERNAME=testdbuser
+DB_PASSWORD=testdbpass
+DB_NAME=testdb
 ```
 
-How can we accomodate this *dynamic file location* without modifying our code?
+How can we accommodate this *dynamic file location* without modifying our code?
 The `useFile()` method of configuration shown above won't work for this. You need
 a way to read a **different** `.env` file for each environment. A typical
 approach is to use a **specific** environment variable (typically
