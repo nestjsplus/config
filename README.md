@@ -66,7 +66,8 @@ In this example, we explicitly provide a full path to the `.env` file via the `u
 This is simple, but not terribly flexible.  We'll explore more flexible options
 [below](#Dynamic-env-file-example). When using a static file path with `useFile`, the path is relative
 to the root directory for the project, or the root directory in which the app is
-running.  For example, if the app currently has a structure like:
+running (in test and production environments).  For example, if the app currently
+has a structure like:
 ```bash
 myprojects
 ├── src
@@ -80,7 +81,7 @@ myprojects
 ```
 
 This would result in the `ConfigManagerModule` looking for a `dotenv`-formatted file in:
-`myprojects/config/test.env`
+> `myprojects/config/test.env`
 
 
 Your `ConfigService` might look like this:
@@ -160,9 +161,11 @@ export class AppService {
 }
 ```
 
-Would return `Hello John` when run with this configuration.
+Would return
+> `Hello John`
+> when run with this configuration.
 
-## Dynamic env file example
+## Dynamic env file location example
 Let's say you have two environments: *development* and *test*, and want to set up your
 `ConfigService` to dynamically locate the `.env` file that is appropriate to each environment.
 Let's assume that *development* uses one set of database credentials, and *test* uses another.
@@ -185,16 +188,22 @@ DB_USER=testdbuser
 DB_PASS=testdbpass
 ```
 
-The `useFile()` method of configuration shown above won't work for this. You need a way to read a **different**
-`.env` file for each environment. A typical approach is to use a **specific** environment variable (typically
-`NODE_ENV`, though you can choose whatever you want) to indicate what the active environment is.  For example, when
-running in *development*, you'd have `NODE_ENV` equal to `development`, and in *test*,
-`NODE_ENV`'s value would equal `test`.
+How can we accomodate this *dynamic file location* without modifying our code?
+The `useFile()` method of configuration shown above won't work for this. You need
+a way to read a **different** `.env` file for each environment. A typical
+approach is to use a **specific** environment variable (typically
+`NODE_ENV`, though you can choose whatever you want) to indicate what the
+active environment is.  For example, when
+running in *development*, you'd have `NODE_ENV` equal to `development`, and
+in *test*, `NODE_ENV`'s value would equal `test`.
 
-Based on this, you can use the `useEnv` method of configuring the `ConfigManagerModule`. The `useEnv` method is described in the [Module Configuration Options](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options#Basic-dynamic-configuration) section, but a simple example is shown below.
+Based on this, you can use the `useEnv` method of configuring the `ConfigManagerModule`.
+The `useEnv` method is described in the
+[Module Configuration Options](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options#Basic-dynamic-configuration)
+section, but a simple example is shown below.
 
-To accommodate this requirement, we'd modify the way we register the `ConfigManagerModule` as follows, replacing
-`useFile` with `useEnv`:
+To accommodate this requirement, we'd modify the way we register the `ConfigManagerModule`
+as follows, replacing `useFile` with `useEnv`:
 
 ```typescript
 // src/config/config.module.ts
@@ -207,7 +216,7 @@ import { ConfigService } from './config.service';
   imports: [
     ConfigManagerModule.register({
       useEnv: {
-        folder: 'config/test.env',
+        folder: 'config',
       }
     }),
   ],
@@ -217,7 +226,7 @@ import { ConfigService } from './config.service';
 export class ConfigModule {}
 ```
 
-If, instead of `NODE_ENV` we wanted to use an environment variable like
+If instead of `NODE_ENV` we wanted to use an environment variable like
 `MY_ENVIRONMENT` to signify which environment we're running (e.g.,
 `MY_ENVIRONMENT` is equal to `development` when we're in our development
 environment), we'd identify that environment variable using the option `envKey`,
@@ -234,7 +243,7 @@ import { ConfigService } from './config.service';
     ConfigManagerModule.register({
       envKey: 'MY_ENVIRONMENT',
       useEnv: {
-        folder: 'config/test.env',
+        folder: 'config',
       }
     }),
   ],
