@@ -1,6 +1,6 @@
 {
   "name": "nestjs-config-manager",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Flexible, Docker-friendly, Dotenv-based Configuration Module for NestJs",
   "main": "index.js",
   "scripts": {
