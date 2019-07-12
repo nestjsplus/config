@@ -1,6 +1,6 @@
 import { Inject, Logger } from '@nestjs/common';
 import { CONFIG_OPTIONS } from './constants';
-import { ConfigOptions, EnvHash } from './interfaces';
+import { ConfigModuleOptions, EnvHash } from './interfaces';
 
 /**
  * Root abstract class for ConfigManager. Provides core members and constructor
@@ -13,7 +13,7 @@ export abstract class AbstractConfigManager {
 
   protected readonly procEnv: EnvHash;
 
-  constructor(@Inject(CONFIG_OPTIONS) public options: ConfigOptions) {
+  constructor(@Inject(CONFIG_OPTIONS) public options: ConfigModuleOptions) {
     this.procEnv = Object.assign({}, process.env);
     this.loadAndValidateEnvFile();
   }

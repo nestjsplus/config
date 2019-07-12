@@ -1,5 +1,5 @@
 import { ConfigManager } from './config-manager.service';
-import * as Joi from 'joi';
+import * as Joi from '@hapi/joi';
 // tslint:disable: max-classes-per-file
 
 const defaultProcEnv = {

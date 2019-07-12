@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 import * as clc from 'cli-color';
-import * as Joi from 'joi';
+import * as Joi from '@hapi/joi';
 
 import { dbg, NO_ENV_FILE_ERROR } from './constants';
 import {

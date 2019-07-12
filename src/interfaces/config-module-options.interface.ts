@@ -1,8 +1,8 @@
-type UseEnvOptions = {
+interface UseEnvOptions {
   folder?: string;
-};
+}
 
-export interface ConfigOptions {
+export interface ConfigModuleOptions {
   /**
    * Name of the environment variable used to determine the current
    * `environment`.  Defaults to `NODE_ENV`.  For example, if `NODE_ENV` has

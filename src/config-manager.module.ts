@@ -1,8 +1,11 @@
-import { Module, DynamicModule, Global } from '@nestjs/common';
+import { Module, DynamicModule, Provider } from '@nestjs/common';
 import { CONFIG_OPTIONS } from './constants';
-import { ConfigOptions } from './interfaces';
+import {
+  ConfigModuleOptions,
+  ConfigModuleAsyncOptions,
+  ConfigOptionsFactory,
+} from './interfaces';
 
-@Global()
 @Module({})
 export class ConfigManagerModule {
   /**
@@ -14,17 +17,61 @@ export class ConfigManagerModule {
    *
    * @returns {DynamicModule} the ConfigManagerModule, fully configured
    */
-  public static register(options: ConfigOptions): DynamicModule {
+  public static register(options: ConfigModuleOptions): DynamicModule {
     return {
       module: ConfigManagerModule,
       providers: [
         {
-          name: CONFIG_OPTIONS,
           provide: CONFIG_OPTIONS,
           useValue: options,
         },
       ],
       exports: [CONFIG_OPTIONS],
+    };
+  }
+
+  static registerAsync(options: ConfigModuleAsyncOptions): DynamicModule {
+    return {
+      module: ConfigManagerModule,
+      imports: options.imports || [],
+      providers: this.createAsyncProviders(options),
+      exports: [CONFIG_OPTIONS],
+    };
+  }
+
+  private static createAsyncProviders(
+    options: ConfigModuleAsyncOptions,
+  ): Provider[] {
+    if (options.useExisting || options.useFactory) {
+      return [this.createAsyncOptionsProvider(options)];
+    }
+    return [
+      this.createAsyncOptionsProvider(options),
+      {
+        provide: options.useClass,
+        useClass: options.useClass,
+      },
+    ];
+  }
+
+  private static createAsyncOptionsProvider(
+    options: ConfigModuleAsyncOptions,
+  ): Provider {
+    if (options.useFactory) {
+      return {
+        provide: CONFIG_OPTIONS,
+        useFactory: options.useFactory,
+        inject: options.inject || [],
+      };
+    }
+
+    return {
+      name: CONFIG_OPTIONS,
+      provide: CONFIG_OPTIONS,
+      useFactory: async (optionsFactory: ConfigOptionsFactory) => {
+        return optionsFactory.createConfigOptions();
+      },
+      inject: [options.useExisting || options.useClass],
     };
   }
 }

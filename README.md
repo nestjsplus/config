@@ -21,7 +21,7 @@
 * Completely dynamic and customizable determination of the name/location of your `.env` file
   * means: no code changes to handle unique configs per environment
 * Default values (i.e., optional environment variables with default values)
-* Trace how an environment variable was resolved (external environment, `.env` file or default) to help debug tricky problems between dev, test, production
+* [Trace](https://github.com/johnbiundo/nestjs-config-manager/wiki/Api#trace-method) how an environment variable was resolved (i.e., came from external environment, `.env` file or as a default value) to help debug tricky problems between dev, test, production
 
 [Full Feature List](https://github.com/johnbiundo/nestjs-config-manager/wiki/Features)
 
@@ -31,6 +31,9 @@
 - [How it works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works)
 - [Schemas](https://github.com/johnbiundo/nestjs-config-manager/wiki/Schemas)
 - [Module configuration options](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options)
+- [Debug Switches](https://github.com/johnbiundo/nestjs-config-manager/wiki/Debug-switches)
+- [Use with Docker](https://github.com/johnbiundo/nestjs-config-manager/wiki/Docker)
+- [Full Tutorial](https://github.com/johnbiundo/nestjs-config-manager/wiki/Tutorial)
 
 ## Quick Start - Read This First
 You can [read more about **how** nestjs-config-manager works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works) if you want. And the simple API is [documented here](https://github.com/johnbiundo/nestjs-config-manager/wiki/Api).  But this section should get you started quickly.
@@ -40,6 +43,7 @@ we'll call it `ConfigModule`), which you probably want to be global.  You'll the
 * Centralized setup of the `ConfigurationModule/Service`
 * Use Dependency Injection to provide the service wherever needed
 * Easily override/mock the service for testing
+* Future-proof: if you later want to switch to another 3rd party config module, your dependencies are isolated in one place
 
 Following these conventions, your `ConfigModule` might look like this:
 ```typescript
@@ -81,7 +85,8 @@ myproject
 └── package.json
 ```
 
-This would result in the `ConfigManagerModule` looking for a `dotenv`-formatted file in:
+The above `useFile` configuration method would result in the `ConfigManagerModule`
+looking for a `dotenv`-formatted file in:
 > `myproject/config/development.env`
 
 
@@ -94,6 +99,11 @@ import * as Joi from 'joi';
 
 @Injectable()
 export class ConfigService extends ConfigManager {
+  // Our custom "schema"
+  // We supply it to the ConfigManager by extending the
+  // ConfigManager class and implementing the
+  // provideConfigSpec() method, which simply returns
+  // our custom schema
   provideConfigSpec() {
     return {
       DB_HOST: {
@@ -142,7 +152,7 @@ DB_NAME=mydb
 .
 ```
 
-A service like this:
+A service could then use it like this:
 ```typescript
 // src/app.service.ts
 import { Injectable } from '@nestjs/common';
@@ -162,7 +172,7 @@ export class AppService {
 }
 ```
 
-Would return
+And calling `getHello()` would return
 > `Hello john`
 > when run with this configuration.
 
@@ -262,8 +272,14 @@ require an even **more** flexible approach. To handle arbitrarily complex
 environments, a third method, `useFunction`, is available to write custom
 JavaScript code to generate the appropriate path and filename dynamically.
 This is covered in
-[Using a custom function](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options#The-useFunction-method).
+[Using a custom function](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options#usefunction).
 
+
+## What's next?
+- [How it works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works)
+- [Module Configuration options](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options)
+- [Schemas](https://github.com/johnbiundo/nestjs-config-manager/wiki/Schemas)
+- [API](https://github.com/johnbiundo/nestjs-config-manager/wiki/Api)
 
 ## Change Log
 

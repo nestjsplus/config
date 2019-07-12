@@ -28,10 +28,10 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
+    "@hapi/joi": "^15.1.0",
     "cli-color": "^1.4.0",
     "debug": "^4.1.1",
-    "dotenv": "^8.0.0",
-    "joi": "^14.3.1"
+    "dotenv": "^8.0.0"
   },
   "repository": {
     "type": "git",
