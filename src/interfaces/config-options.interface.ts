@@ -1,3 +1,7 @@
+type UseEnvOptions = {
+  folder?: string;
+};
+
 export interface ConfigOptions {
   /**
    * Name of the environment variable used to determine the current
@@ -22,15 +26,18 @@ export interface ConfigOptions {
   /**
    * Use an environment variable to locate the `.env` file.
    */
-  useEnv?: {
-    /**
-     * Name of the folder, relative to the project root directory, containing
-     * the `.env` file.
-     *
-     * Defaults to the project root directory.
-     */
-    folder?: string;
-  };
+
+  useEnv?: boolean | UseEnvOptions;
+
+  // {
+  //   /**
+  //    * Name of the folder, relative to the project root directory, containing
+  //    * the `.env` file.
+  //    *
+  //    * Defaults to the project root directory.
+  //    */
+  //   folder?: string;
+  // };
 
   /**
    * Provide a function that builds a full path to the `.env` file.

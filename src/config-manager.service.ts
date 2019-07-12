@@ -129,9 +129,12 @@ export class ConfigManager extends AbstractConfigManager {
     } else if (process.env.NODE_ENV) {
       environmentKey = 'NODE_ENV';
     } else {
-      this.handleFatalError(
-        'Fatal error. No env key specified, and `NODE_ENV` is not defined.',
-      );
+      // a valid envKey is required for all but useFile
+      if (!this.options.useFile) {
+        this.handleFatalError(
+          'Fatal error. No envKey specified, and `NODE_ENV` is not defined.',
+        );
+      }
     }
 
     this.environment = process.env[environmentKey];
@@ -220,19 +223,15 @@ export class ConfigManager extends AbstractConfigManager {
     dbg.cfg('> ... using environment');
 
     // Use a subfolder under the envRoot, if provided
-    const envRootSubfolder: string = this.options.useEnv.folder
-      ? this.options.useEnv.folder
-      : './src';
+    let envRootSubfolder: string = 'config';
+    if (typeof this.options.useEnv === 'object' && this.options.useEnv.folder) {
+      envRootSubfolder = this.options.useEnv.folder;
+    }
 
     const envPrefix = this.environment;
 
     // construct the path to the config file
-    const filePath = path.resolve(
-      envRoot,
-      envRootSubfolder,
-      './config',
-      envPrefix,
-    );
+    const filePath = path.resolve(envRoot, envRootSubfolder, envPrefix);
 
     this.envFilePath = filePath + '.env';
   }
