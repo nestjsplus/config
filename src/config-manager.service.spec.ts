@@ -2,7 +2,7 @@ import { ConfigManager } from './config-manager.service';
 import * as Joi from '@hapi/joi';
 // tslint:disable: max-classes-per-file
 
-let defaultProcEnv = {
+const defaultProcEnv = {
   NODE_ENV: 'test',
 };
 
@@ -337,7 +337,6 @@ describe('ConfigService', () => {
     });
 
     test('Should pick up default when missing (with required omitted)', async () => {
-      console.log('3defaultProcEnv: ', defaultProcEnv);
       process.env = Object.assign({}, defaultProcEnv);
       const configOpts = {
         useFile: 'config/test1.env',
@@ -361,7 +360,6 @@ describe('ConfigService', () => {
     });
 
     test('Should override default when present in environment (with required omitted)', async () => {
-      console.log('2defaultProcEnv: ', defaultProcEnv);
       process.env = { NODE_ENV: 'test', TEST4: 'FOUR' };
       const configOpts = {
         useFile: 'config/test1.env',
@@ -385,9 +383,7 @@ describe('ConfigService', () => {
     });
 
     test('Should override default when present in dotenv (with required omitted)', async () => {
-      console.log('1defaultProcEnv: ', defaultProcEnv);
       process.env = Object.assign({}, defaultProcEnv);
-      console.log('process.env: ', process.env);
       const configOpts = {
         useFile: 'config/test6.env',
         onError: 'throw',
