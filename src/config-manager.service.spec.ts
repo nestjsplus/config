@@ -2,7 +2,7 @@ import { ConfigManager } from './config-manager.service';
 import * as Joi from '@hapi/joi';
 // tslint:disable: max-classes-per-file
 
-const defaultProcEnv = {
+let defaultProcEnv = {
   NODE_ENV: 'test',
 };
 
@@ -27,6 +27,26 @@ const config1 = {
   },
 };
 
+// for testing required = false as default
+const config2 = {
+  TEST1: {
+    validate: Joi.string(),
+    required: true,
+  },
+  TEST2: {
+    validate: Joi.number(),
+    required: true,
+  },
+  TEST3: {
+    validate: Joi.number(),
+    default: 3333,
+  },
+  TEST4: {
+    validate: Joi.string(),
+    default: '4444',
+  },
+};
+
 // Mocking process.exit
 // https://stackoverflow.com/a/50821983/3457611
 const setProperty = (object, property, value) => {
@@ -41,7 +61,7 @@ setProperty(process, 'exit', mockExit);
 describe('ConfigService', () => {
   describe('It compiles and starts', () => {
     test('should be defined', async () => {
-      process.env = defaultProcEnv;
+      process.env = Object.assign({}, defaultProcEnv);
       const configOpts = {
         useFile: 'config/test1.env',
         onError: 'throw',
@@ -101,7 +121,7 @@ describe('ConfigService', () => {
    */
   describe('Test validations', () => {
     test('Should throw on missing required env var', async () => {
-      process.env = defaultProcEnv;
+      process.env = Object.assign({}, defaultProcEnv);
       const configOpts = {
         useFile: 'config/test2.env',
         onError: 'throw',
@@ -121,7 +141,7 @@ describe('ConfigService', () => {
     });
 
     test('Should throw with string supplied on env var validating for number', async () => {
-      process.env = defaultProcEnv;
+      process.env = Object.assign({}, defaultProcEnv);
       const configOpts = {
         useFile: 'config/test3.env',
         onError: 'throw',
@@ -141,7 +161,7 @@ describe('ConfigService', () => {
     });
 
     test('Should throw with multiple missing required env vars', async () => {
-      process.env = defaultProcEnv;
+      process.env = Object.assign({}, defaultProcEnv);
       const configOpts = {
         useFile: 'config/test4.env',
         onError: 'throw',
@@ -164,7 +184,7 @@ describe('ConfigService', () => {
     });
 
     test('Should throw with missing required AND validation failure', async () => {
-      process.env = defaultProcEnv;
+      process.env = Object.assign({}, defaultProcEnv);
       const configOpts = {
         useFile: 'config/test5.env',
         onError: 'throw',
@@ -294,7 +314,7 @@ describe('ConfigService', () => {
     });
 
     test('Should override default when present in dotenv', async () => {
-      process.env = defaultProcEnv;
+      process.env = Object.assign({}, defaultProcEnv);
       const configOpts = {
         useFile: 'config/test6.env',
         onError: 'throw',
@@ -315,6 +335,79 @@ describe('ConfigService', () => {
         resolvedValue: 'FOURTYFOUR',
       });
     });
+
+    test('Should pick up default when missing (with required omitted)', async () => {
+      console.log('3defaultProcEnv: ', defaultProcEnv);
+      process.env = Object.assign({}, defaultProcEnv);
+      const configOpts = {
+        useFile: 'config/test1.env',
+        onError: 'throw',
+      };
+      class CfgService extends ConfigManager {
+        provideConfigSpec() {
+          return config2;
+        }
+      }
+      const configService = new CfgService(configOpts);
+      const trace = configService.trace();
+      expect(trace.TEST3).toEqual({
+        default: config2.TEST3.default,
+        dotenv: '--',
+        env: '--',
+        isExtra: false,
+        resolvedFrom: 'default',
+        resolvedValue: config1.TEST3.default,
+      });
+    });
+
+    test('Should override default when present in environment (with required omitted)', async () => {
+      console.log('2defaultProcEnv: ', defaultProcEnv);
+      process.env = { NODE_ENV: 'test', TEST4: 'FOUR' };
+      const configOpts = {
+        useFile: 'config/test1.env',
+        onError: 'throw',
+      };
+      class CfgService extends ConfigManager {
+        provideConfigSpec() {
+          return config2;
+        }
+      }
+      const configService = new CfgService(configOpts);
+      const trace = configService.trace();
+      expect(trace.TEST4).toEqual({
+        default: config2.TEST4.default,
+        dotenv: '--',
+        env: 'FOUR',
+        isExtra: false,
+        resolvedFrom: 'env',
+        resolvedValue: 'FOUR',
+      });
+    });
+
+    test('Should override default when present in dotenv (with required omitted)', async () => {
+      console.log('1defaultProcEnv: ', defaultProcEnv);
+      process.env = Object.assign({}, defaultProcEnv);
+      console.log('process.env: ', process.env);
+      const configOpts = {
+        useFile: 'config/test6.env',
+        onError: 'throw',
+      };
+      class CfgService extends ConfigManager {
+        provideConfigSpec() {
+          return config2;
+        }
+      }
+      const configService = new CfgService(configOpts);
+      const trace = configService.trace();
+      expect(trace.TEST4).toEqual({
+        default: config2.TEST4.default,
+        dotenv: 'FOURTYFOUR',
+        env: '--',
+        isExtra: false,
+        resolvedFrom: 'dotenv',
+        resolvedValue: 'FOURTYFOUR',
+      });
+    });
   });
 
   /**
@@ -322,7 +415,7 @@ describe('ConfigService', () => {
    */
   describe('Test extras', () => {
     test('Should allow extra vars when allowExtras is true', async () => {
-      process.env = defaultProcEnv;
+      process.env = Object.assign({}, defaultProcEnv);
       const configOpts = {
         useFile: 'config/test7.env',
         onError: 'throw',
@@ -346,7 +439,7 @@ describe('ConfigService', () => {
     });
 
     test('Should throw when extra vars present and allowExtras is default', async () => {
-      process.env = defaultProcEnv;
+      process.env = Object.assign({}, defaultProcEnv);
       const configOpts = {
         useFile: 'config/test7.env',
         onError: 'throw',
@@ -364,7 +457,7 @@ describe('ConfigService', () => {
     });
 
     test('Should throw when extra vars present and allowExtras is false', async () => {
-      process.env = defaultProcEnv;
+      process.env = Object.assign({}, defaultProcEnv);
       const configOpts = {
         useFile: 'config/test7.env',
         onError: 'throw',
@@ -389,7 +482,7 @@ describe('ConfigService', () => {
 
   describe('Test onError options', () => {
     test('Should report errors and continue', async () => {
-      process.env = defaultProcEnv;
+      process.env = Object.assign({}, defaultProcEnv);
       const configOpts = {
         useFile: 'config/test1.env',
         onError: 'continue',
@@ -406,7 +499,7 @@ describe('ConfigService', () => {
     });
 
     test('Should exit on error when onError = "throw"', async () => {
-      process.env = defaultProcEnv;
+      process.env = Object.assign({}, defaultProcEnv);
       const configOpts = {
         useFile: 'config/test7.env',
         onError: 'exit',
@@ -422,7 +515,7 @@ describe('ConfigService', () => {
     });
 
     test('Should exit on error when onError is omitted', async () => {
-      process.env = defaultProcEnv;
+      process.env = Object.assign({}, defaultProcEnv);
       const configOpts = {
         useFile: 'config/test7.env',
         allowExtras: false,
@@ -437,7 +530,7 @@ describe('ConfigService', () => {
     });
 
     test('Should exit on error when onError is invalid', async () => {
-      process.env = defaultProcEnv;
+      process.env = Object.assign({}, defaultProcEnv);
       const configOpts = {
         useFile: 'config/test7.env',
         onError: 'junk',
@@ -593,7 +686,7 @@ describe('ConfigService', () => {
    */
   describe('Test missing files', () => {
     test('Should throw when useFile points at bad file', async () => {
-      process.env = defaultProcEnv;
+      process.env = Object.assign({}, defaultProcEnv);
       const configOpts = {
         useFile: 'config/nonsense.env',
         onError: 'throw',
@@ -613,7 +706,7 @@ describe('ConfigService', () => {
     });
 
     test('Should throw when useEnv has a bad envKey', async () => {
-      process.env = defaultProcEnv;
+      process.env = Object.assign({}, defaultProcEnv);
       const configOpts = {
         envKey: 'BAD_KEY',
         useEnv: {
@@ -634,7 +727,7 @@ describe('ConfigService', () => {
     });
 
     test('Should throw when useEnv has a bad envKey and allowMissingEnvFile is true', async () => {
-      process.env = defaultProcEnv;
+      process.env = Object.assign({}, defaultProcEnv);
       const configOpts = {
         envKey: 'BAD_KEY',
         useEnv: {

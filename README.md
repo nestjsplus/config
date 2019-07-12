@@ -9,6 +9,9 @@
   <a href="https://badge.fury.io/js/nestjs-config-manager">
     <img src="https://badge.fury.io/js/nestjs-config-manager.svg" alt="npm version" height="18">
   </a>
+  <a href="https://nestjs.com">
+    <img src="https://img.shields.io/badge/built%20with-NestJs-red.svg">
+  </a>
 </div>
 
 <div align="center">
@@ -95,7 +98,7 @@ Your `ConfigService` might look like this:
 // src/config/config.service.ts
 import { Injectable } from '@nestjs/common';
 import { ConfigManager } from 'nestjs-config-manager';
-import * as Joi from 'joi';
+import * as Joi from '@hapi/joi';
 
 @Injectable()
 export class ConfigService extends ConfigManager {
