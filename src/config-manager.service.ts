@@ -123,6 +123,11 @@ export class ConfigManager extends AbstractConfigManager {
    * dynamically provided during module registration
    */
   private processOptions() {
+    // default option for onError is exit
+    if (!this.options.onError) {
+      this.options.onError = 'exit';
+    }
+
     let environmentKey;
     if (this.options.envKey) {
       environmentKey = this.options.envKey;
@@ -143,13 +148,6 @@ export class ConfigManager extends AbstractConfigManager {
     if (!this.options.useFile && !this.isValidEnvironment(this.environment)) {
       this.handleFatalError(`Bad environment key: ${this.options.envKey}`);
     }
-    const fromEnvironment = process.env[environmentKey]
-      ? `using ${environmentKey}`
-      : 'using default';
-
-    if (!this.options.onError) {
-      this.options.onError = 'exit';
-    }
 
     if (
       this.options.onError &&
@@ -162,7 +160,7 @@ export class ConfigManager extends AbstractConfigManager {
     }
 
     dbg.cfg('> cfg options: ', this.options);
-    dbg.cfg(`> environment (${fromEnvironment}): ${this.environment}`);
+    dbg.cfg(`> environment (using ${environmentKey}): ${this.environment}`);
   }
 
   /**
@@ -445,19 +443,19 @@ export class ConfigManager extends AbstractConfigManager {
    */
   private handleFatalError(message) {
     switch (this.options.onError) {
-      case 'exit':
-        this.logger.error(`${message} -- App will now exit`);
-        process.exit(0);
-        break;
       case 'throw':
         this.logger.error(`${message} -- See exception for details`);
         throw new Error(message);
-        break;
       case 'continue':
         this.logger.error(
           `An error was encountered in configuration, but 'continue' was specified.`,
         );
         this.logger.error('This may cause unpredictable results!');
+        break;
+      default:
+      case 'exit':
+        this.logger.error(`${message} -- App will now exit`);
+        process.exit(0);
         break;
     }
   }
