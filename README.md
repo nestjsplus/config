@@ -1,6 +1,10 @@
-<h1 align="center">NestJs Configuration Manager</h1>
+<h1 align="center">NestJS Configuration Manager</h1>
 
-<h3 align="center">Flexible, Docker-friendly, Dotenv-based Configuration Module for NestJs</h3>
+<h3 align="center">Flexible, Docker-friendly, Dotenv-based Configuration Module for NestJS</h3>
+
+<div align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="150" alt="Nest Logo" /></a>
+</div>
 
 <div align="center">
   <a href="https://github.com/johnbiundo/nestjs-config-manager/blob/master/LICENSE">
@@ -10,17 +14,14 @@
     <img src="https://badge.fury.io/js/nestjs-config-manager.svg" alt="npm version" height="18">
   </a>
   <a href="https://nestjs.com">
-    <img src="https://img.shields.io/badge/built%20with-NestJs-red.svg">
+    <img src="https://img.shields.io/badge/built%20with-NestJs-red.svg" alt="Built with NestJS>
   </a>
 </div>
 
 <div align="center">
-  <img src="https://user-images.githubusercontent.com/6937031/60838684-23cc7b00-a180-11e9-8343-2b81fe151c48.png">
+  <img src="https://user-images.githubusercontent.com/6937031/60838684-23cc7b00-a180-11e9-8343-2b81fe151c48.png" alt="NestJS Configuration Manager Logo">
 </div>
 
-<div align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="180" alt="Nest Logo" /></a>
-</div>
 
 ## Top Features
 * [Docker-friendly](https://github.com/johnbiundo/nestjs-config-manager/wiki/Docker): e.g., use `.env` files in dev/test, environment variables in production, or any combination
@@ -33,7 +34,7 @@
 [Full Feature List](https://github.com/johnbiundo/nestjs-config-manager/wiki/Features)
 
 ## Documentation
-- [Why another NestJs configuration module?](https://github.com/johnbiundo/nestjs-config-manager/wiki)
+- [Why another NestJS configuration module?](https://github.com/johnbiundo/nestjs-config-manager/wiki)
 - [API](https://github.com/johnbiundo/nestjs-config-manager/wiki/Api)
 - [How it works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works)
 - [Schemas](https://github.com/johnbiundo/nestjs-config-manager/wiki/Schemas)
