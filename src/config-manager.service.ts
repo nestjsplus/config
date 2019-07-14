@@ -72,7 +72,9 @@ export class ConfigManager extends AbstractConfigManager {
       required,
     );
 
-    dbg.trace('> resolveMap: \n', this.resolveMap);
+    if (this.environment !== 'production' || process.env.TRACE_PRODUCTION) {
+      dbg.trace('> resolveMap: \n', this.resolveMap);
+    }
 
     /**
      * Validate configuration using Joi
@@ -135,7 +137,7 @@ export class ConfigManager extends AbstractConfigManager {
       environmentKey = 'NODE_ENV';
     } else {
       // a valid envKey is required for all but useFile
-      if (!this.options.useFile) {
+      if (!this.options.useFile && !this.options.defaultEnvironment) {
         this.handleFatalError(
           'Fatal error. No envKey specified, and `NODE_ENV` is not defined.',
         );
@@ -143,6 +145,12 @@ export class ConfigManager extends AbstractConfigManager {
     }
 
     this.environment = process.env[environmentKey];
+    if (
+      typeof this.environment === 'undefined' &&
+      this.options.hasOwnProperty('defaultEnvironment')
+    ) {
+      this.environment = this.options.defaultEnvironment;
+    }
 
     // a valid environment is required for all methods but useFile
     if (!this.options.useFile && !this.isValidEnvironment(this.environment)) {
@@ -336,7 +344,7 @@ export class ConfigManager extends AbstractConfigManager {
   /**
    * Method to provide the configuration spec.  Must be overriden by user.
    */
-  protected provideConfigSpec(): object {
+  protected provideConfigSpec(environment): object {
     throw new MissingOverrideError();
   }
 
@@ -349,7 +357,7 @@ export class ConfigManager extends AbstractConfigManager {
   private processConfigSpec(): Joi.SchemaMap {
     let configSpec;
     try {
-      configSpec = this.provideConfigSpec();
+      configSpec = this.provideConfigSpec(this.environment);
     } catch (error) {
       let errorMessage;
       if (error instanceof MissingOverrideError) {

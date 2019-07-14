@@ -1,5 +1,6 @@
 import { ConfigManager } from './config-manager.service';
 import * as Joi from '@hapi/joi';
+import { dbg } from './constants';
 // tslint:disable: max-classes-per-file
 
 const defaultProcEnv = {
@@ -631,6 +632,40 @@ describe('ConfigService', () => {
       const TEST1 = configService.get('TEST1');
       expect(TEST1).toEqual('abc');
     });
+
+    test('Should work with useEnv, no NODE_ENV provided, and default environment ', async () => {
+      process.env = {};
+      const configOpts = {
+        useEnv: true,
+        onError: 'throw',
+        defaultEnvironment: 'test1',
+      };
+      class CfgService extends ConfigManager {
+        provideConfigSpec() {
+          return config1;
+        }
+      }
+      const configService = new CfgService(configOpts);
+      const TEST1 = configService.get('TEST1');
+      expect(TEST1).toEqual('abc');
+    });
+
+    test('Should work with useEnv and ignore default environment if NODE_ENV defined', async () => {
+      process.env = { NODE_ENV: 'test1' };
+      const configOpts = {
+        useEnv: true,
+        onError: 'throw',
+        defaultEnvironment: 'test2',
+      };
+      class CfgService extends ConfigManager {
+        provideConfigSpec() {
+          return config1;
+        }
+      }
+      const configService = new CfgService(configOpts);
+      const TEST1 = configService.get('TEST1');
+      expect(TEST1).toEqual('abc');
+    });
   });
 
   /**
@@ -831,6 +866,66 @@ describe('ConfigService', () => {
       const configService = new CfgService(configOpts);
       const TEST1 = configService.get('TEST1');
       expect(TEST1).toEqual('eee');
+    });
+  });
+
+  /**
+   *  Test trace() in different environments
+   */
+  describe('Test trace() in different environments', () => {
+    test('trace() should be called in non production', async () => {
+      const mockDbg = jest.fn();
+      setProperty(dbg, 'trace', mockDbg);
+      process.env = { NODE_ENV: 'something', DEBUG: 'trc' };
+      const configOpts = {
+        useFile: 'config/test1.env',
+        onError: 'throw',
+      };
+      class CfgService extends ConfigManager {
+        provideConfigSpec() {
+          return config1;
+        }
+      }
+      const configService = new CfgService(configOpts);
+      expect(mockDbg).toBeCalledTimes(1);
+    });
+
+    test('trace() should not be called in production', async () => {
+      const mockDbg = jest.fn();
+      setProperty(dbg, 'trace', mockDbg);
+      process.env = { NODE_ENV: 'production', DEBUG: 'trc' };
+      const configOpts = {
+        useFile: 'config/test1.env',
+        onError: 'throw',
+      };
+      class CfgService extends ConfigManager {
+        provideConfigSpec() {
+          return config1;
+        }
+      }
+      const configService = new CfgService(configOpts);
+      expect(mockDbg).toBeCalledTimes(0);
+    });
+
+    test('trace() should be called in production with TRACE_PRODUCTION', async () => {
+      const mockDbg = jest.fn();
+      setProperty(dbg, 'trace', mockDbg);
+      process.env = {
+        NODE_ENV: 'production',
+        DEBUG: 'trc',
+        TRACE_PRODUCTION: 'true',
+      };
+      const configOpts = {
+        useFile: 'config/test1.env',
+        onError: 'throw',
+      };
+      class CfgService extends ConfigManager {
+        provideConfigSpec() {
+          return config1;
+        }
+      }
+      const configService = new CfgService(configOpts);
+      expect(mockDbg).toBeCalledTimes(1);
     });
   });
 });

@@ -49,6 +49,11 @@ export interface ConfigModuleOptions {
   useFunction?: (rootFolder: string, environment: string) => string;
 
   /**
+   * Sets a default value for the current environment
+   */
+  defaultEnvironment?: string;
+
+  /**
    * Should the ConfigManager allow extra variables in the `.env` file?
    * Defaults to false.
    */
