@@ -1,7 +1,9 @@
 <h1 align="center">NestJS Configuration Manager</h1>
 
 <div align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="150" alt="Nest Logo" /></a>
+  <a href="http://nestjs.com/" target="_blank">
+    <img src="https://nestjs.com/img/logo_text.svg" width="150" alt="Nest Logo" />
+  </a>
 </div>
 
 <h3 align="center">Flexible, Docker-friendly, Dotenv-based Configuration Module for NestJS</h3>
@@ -11,13 +13,9 @@
 </p>
 
 <div align="center">
-  <a href="https://github.com/johnbiundo/nestjs-config-manager/blob/master/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="License" />
-  </a>
-  <a href="https://badge.fury.io/js/nestjs-config-manager">
     <img src="https://badge.fury.io/js/nestjs-config-manager.svg" alt="npm version" height="18">
-  </a>
-  <a href="https://nestjs.com">
+  <a href="https://nestjs.com" target="_blank">
     <img src="https://img.shields.io/badge/built%20with-NestJs-red.svg" alt="Built with NestJS">
   </a>
 </div>
