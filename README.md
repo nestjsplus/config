@@ -18,6 +18,7 @@
   </a>
 </div>
 
+<br />
 <p align="center">
   <img src="https://user-images.githubusercontent.com/6937031/60838684-23cc7b00-a180-11e9-8343-2b81fe151c48.png" alt="NestJS Configuration Manager Logo">
 </p>
