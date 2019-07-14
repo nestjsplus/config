@@ -1,6 +1,6 @@
 {
   "name": "nestjs-config-manager",
-  "version": "1.0.6",
+  "version": "1.0.10",
   "description": "Flexible, Docker-friendly, Dotenv-based Configuration Module for NestJs",
   "main": "index.js",
   "scripts": {
@@ -11,9 +11,7 @@
     "test": "jest",
     "test:debug": "export DEBUG=cfg,trace; jest",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "prepublish": "npm run build",
-    "publish": "npm publish --access public"
+    "test:cov": "jest --coverage"
   },
   "keywords": [
     "nestjs",
