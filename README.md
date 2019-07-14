@@ -21,7 +21,8 @@
 </div>
 
 ## Top Features
-* [Docker-friendly](https://github.com/johnbiundo/nestjs-config-manager/wiki/Docker): e.g., use `.env` files in dev/test, environment variables in production, or any combination
+* [Docker-friendly](https://github.com/johnbiundo/nestjs-config-manager/wiki/#test-additional-docker-support-features):
+e.g., use `.env` files in dev/test, environment variables in production, or any combination
 * [@hapi/joi](https://github.com/hapijs/joi)-based validation of environment variables
 * Completely dynamic and customizable determination of the name/location of your `.env` file
   * means: no code changes to handle unique configs per environment
@@ -31,13 +32,13 @@
 [Full Feature List](https://github.com/johnbiundo/nestjs-config-manager/wiki/Features)
 
 ## Documentation
-- [Why another NestJS configuration module?](https://github.com/johnbiundo/nestjs-config-manager/wiki)
+- [Why another NestJS configuration module?](https://github.com/johnbiundo/nestjs-config-manager/wiki/Why)
 - [API](https://github.com/johnbiundo/nestjs-config-manager/wiki/Api)
 - [How it works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works)
 - [Schemas](https://github.com/johnbiundo/nestjs-config-manager/wiki/Schemas)
 - [Module configuration options](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options)
-- [Debug Switches](https://github.com/johnbiundo/nestjs-config-manager/wiki/Debug-switches)
-- [Full Tutorial](https://github.com/johnbiundo/nestjs-config-manager/wiki/Tutorial)
+- [Debug switches](https://github.com/johnbiundo/nestjs-config-manager/wiki/Debug-switches)
+- [Full tutorial](https://github.com/johnbiundo/nestjs-config-manager/wiki/Tutorial)
 - [Use with Docker](https://github.com/johnbiundo/nestjs-config-manager/wiki/Tutorial#Dockerize-the-basic-app)
 
 ## Quick Start - Read This First
