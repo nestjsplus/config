@@ -1,10 +1,10 @@
 <h1 align="center">NestJS Configuration Manager</h1>
 
-<h3 align="center">Flexible, Docker-friendly, Dotenv-based Configuration Module for NestJS</h3>
-
 <div align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="150" alt="Nest Logo" /></a>
 </div>
+
+<h3 align="center">Flexible, Docker-friendly, Dotenv-based Configuration Module for NestJS</h3>
 
 <div align="center">
   <a href="https://github.com/johnbiundo/nestjs-config-manager/blob/master/LICENSE">
