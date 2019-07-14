@@ -12,8 +12,6 @@
     "test:debug": "export DEBUG=cfg,trace; jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "prepublish:next": "npm run build",
-    "publish:next": "npm publish --access public --tag next",
     "prepublish": "npm run build",
     "publish": "npm publish --access public"
   },

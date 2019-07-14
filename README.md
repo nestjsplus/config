@@ -18,6 +18,10 @@
   <img src="https://user-images.githubusercontent.com/6937031/60838684-23cc7b00-a180-11e9-8343-2b81fe151c48.png">
 </div>
 
+<div align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="180" alt="Nest Logo" /></a>
+</div>
+
 ## Top Features
 * [Docker-friendly](https://github.com/johnbiundo/nestjs-config-manager/wiki/Docker): e.g., use `.env` files in dev/test, environment variables in production, or any combination
 * [@hapi/joi](https://github.com/hapijs/joi)-based validation of environment variables
