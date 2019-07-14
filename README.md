@@ -37,8 +37,8 @@
 - [Schemas](https://github.com/johnbiundo/nestjs-config-manager/wiki/Schemas)
 - [Module configuration options](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options)
 - [Debug Switches](https://github.com/johnbiundo/nestjs-config-manager/wiki/Debug-switches)
-- [Use with Docker](https://github.com/johnbiundo/nestjs-config-manager/wiki/Docker)
 - [Full Tutorial](https://github.com/johnbiundo/nestjs-config-manager/wiki/Tutorial)
+- [Use with Docker](https://github.com/johnbiundo/nestjs-config-manager/wiki/Tutorial#Dockerize-the-basic-app)
 
 ## Quick Start - Read This First
 You can [read more about **how NestJSConfigManager** works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works) if you want. And the simple API is [documented here](https://github.com/johnbiundo/nestjs-config-manager/wiki/Api).  But this section should get you started quickly.
