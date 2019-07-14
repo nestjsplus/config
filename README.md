@@ -6,6 +6,10 @@
 
 <h3 align="center">Flexible, Docker-friendly, Dotenv-based Configuration Module for NestJS</h3>
 
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/6937031/60838684-23cc7b00-a180-11e9-8343-2b81fe151c48.png" alt="NestJS Configuration Manager Logo">
+</p>
+
 <div align="center">
   <a href="https://github.com/johnbiundo/nestjs-config-manager/blob/master/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="License" />
@@ -17,12 +21,6 @@
     <img src="https://img.shields.io/badge/built%20with-NestJs-red.svg" alt="Built with NestJS">
   </a>
 </div>
-
-<br />
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/6937031/60838684-23cc7b00-a180-11e9-8343-2b81fe151c48.png" alt="NestJS Configuration Manager Logo">
-</p>
-
 
 ## Top Features
 * [Docker-friendly](https://github.com/johnbiundo/nestjs-config-manager/wiki/Docker): e.g., use `.env` files in dev/test, environment variables in production, or any combination
