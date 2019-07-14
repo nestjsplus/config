@@ -25,6 +25,9 @@ export class ConfigManager extends AbstractConfigManager {
   // represented by an env var like `NODE_ENV`
   private environment: string;
 
+  // whether to log sensitive data
+  private traceProduction: boolean = false;
+
   // map of how each env var has been resolved
   private resolveMap;
 
@@ -72,9 +75,8 @@ export class ConfigManager extends AbstractConfigManager {
       required,
     );
 
-    if (this.environment !== 'production' || process.env.TRACE_PRODUCTION) {
-      dbg.trace('> resolveMap: \n', this.resolveMap);
-    }
+    // tslint:disable: no-unused-expression
+    this.traceProduction && dbg.trace('> resolveMap: \n', this.resolveMap);
 
     /**
      * Validate configuration using Joi
@@ -91,7 +93,7 @@ export class ConfigManager extends AbstractConfigManager {
       },
     );
 
-    dbg.cfg('> Validated result: ', validatedConfig);
+    this.traceProduction && dbg.cfg('> Validated result: ', validatedConfig);
 
     if (missingKeyErrors.length > 0 || validationErrors) {
       let validationErrorMessages = [];
@@ -165,6 +167,10 @@ export class ConfigManager extends AbstractConfigManager {
         `Invalid onError value ('${this.options.onError}') specified in ConfigManagerModule.register().  Using 'exit' instead.`,
       );
       this.options.onError = 'exit';
+    }
+
+    if (this.environment !== 'production' || process.env.TRACE_PRODUCTION) {
+      this.traceProduction = true;
     }
 
     dbg.cfg('> cfg options: ', this.options);
@@ -263,7 +269,7 @@ export class ConfigManager extends AbstractConfigManager {
       }
     }
 
-    dbg.cfg('> Parsed config: ', config.parsed);
+    this.traceProduction && dbg.cfg('> Parsed config: ', config.parsed);
     return config.parsed;
   }
 
@@ -335,7 +341,8 @@ export class ConfigManager extends AbstractConfigManager {
       });
     }
 
-    dbg.cfg('> updatedConfig (after cascade): ', updatedConfig);
+    this.traceProduction &&
+      dbg.cfg('> updatedConfig (after cascade): ', updatedConfig);
 
     this.resolveMap = resolveMap;
     return { updatedConfig, missingKeyErrors };
