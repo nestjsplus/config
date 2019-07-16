@@ -29,6 +29,7 @@
   "readmeFilename": "README.md",
   "dependencies": {
     "@hapi/joi": "^15.1.0",
+    "@types/hapi__joi": "^15.0.2",
     "cli-color": "^1.4.0",
     "debug": "^4.1.1",
     "dotenv": "^8.0.0"
@@ -47,7 +48,6 @@
     "@nestjs/testing": "^6.0.0",
     "@types/dotenv": "^6.1.1",
     "@types/jest": "24.0.13",
-    "@types/joi": "^14.3.3",
     "@types/node": "^10.14.12",
     "concurrently": "^4.1.0",
     "jest": "24.8.0",
