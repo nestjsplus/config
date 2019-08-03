@@ -22,30 +22,35 @@
 
 ## Top Features
 
-- [Docker-friendly](https://github.com/johnbiundo/nestjs-config-manager/wiki/Tutorial#Dockerize-the-basic-app):
+- [Docker-friendly](https://github.com/nestjsplus/config/wiki/Tutorial#Dockerize-the-basic-app):
   e.g., use `.env` files in dev/test, environment variables in production, or any combination
 - [@hapi/joi](https://github.com/hapijs/joi)-based validation of environment variables
 - Completely dynamic and customizable determination of the name/location of your `.env` file
   - means: no code changes to handle unique configs per environment
 - Default values (i.e., optional environment variables with default values)
-- [Trace](https://github.com/johnbiundo/nestjs-config-manager/wiki/Api#trace-method) how an environment variable was resolved (i.e., came from external environment, `.env` file or as a default value) to help debug tricky problems between dev, test, production
+- [Trace](https://github.com/nestjsplus/config/wiki/Api#trace-method) how an environment variable was resolved (i.e., came from external environment, `.env` file or as a default value) to help debug tricky problems between dev, test, production
 
-[Full Feature List](https://github.com/johnbiundo/nestjs-config-manager/wiki/Features)
+[Full Feature List](https://github.com/nestjsplus/config/wiki/Features)
 
 ## Documentation
 
-- [Why another NestJS configuration module?](https://github.com/johnbiundo/nestjs-config-manager/wiki/Why)
-- [API](https://github.com/johnbiundo/nestjs-config-manager/wiki/Api)
-- [How it works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works)
-- [Schemas](https://github.com/johnbiundo/nestjs-config-manager/wiki/Schemas)
-- [Module configuration options](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options)
-- [Debug switches](https://github.com/johnbiundo/nestjs-config-manager/wiki/Debug-switches)
-- [Full tutorial](https://github.com/johnbiundo/nestjs-config-manager/wiki/Tutorial)
-- [Use with Docker](https://github.com/johnbiundo/nestjs-config-manager/wiki/Tutorial#Dockerize-the-basic-app)
+- [Why another NestJS configuration module?](https://github.com/nestjsplus/config/wiki/Why)
+- [API](https://github.com/nestjsplus/config/wiki/Api)
+- [How it works](https://github.com/nestjsplus/config/wiki/How-it-works)
+- [Schemas](https://github.com/nestjsplus/config/wiki/Schemas)
+- [Module configuration options](https://github.com/nestjsplus/config/wiki/Module-configuration-options)
+- [Debug switches](https://github.com/nestjsplus/config/wiki/Debug-switches)
+- [Full tutorial](https://github.com/nestjsplus/config/wiki/Tutorial)
+- [Use with Docker](https://github.com/nestjsplus/config/wiki/Tutorial#Dockerize-the-basic-app)
 
 ## Quick Start - Read This First
 
-You can [read more about **how NestJSConfigManager** works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works) if you want. And the simple API is [documented here](https://github.com/johnbiundo/nestjs-config-manager/wiki/Api). But this section should get you started quickly.
+You can [read more about **how NestJSConfigManager** works](https://github.com/nestjsplus/config/wiki/How-it-works) if you want. And the simple API is [documented here](https://github.com/nestjsplus/config/wiki/Api). But this section should get you started quickly.
+
+To install with npm (or run yarn equivalent):
+```bash
+npm install @nestsjplus/config
+```
 
 The package has one global Nest module (`ConfigManagerModule`), and one main class (`ConfigManager`) that you'll need to work with. The main idea is to create **your own** _ConfigService_ (in the examples, we'll call it `ConfigService`, but you can call it whatever you want). You probably want this in its own module (in the examples,
 we'll call it `ConfigModule`), which you probably want to be global. You'll then _provide_ your `ConfigService` for use in the rest of your application. This approach affords you a great deal of flexibility:
@@ -60,7 +65,7 @@ Following these conventions, your `ConfigModule` might look like this:
 ```typescript
 // src/config/config.module.ts
 import { Module, Global } from '@nestjs/common';
-import { ConfigManagerModule } from 'nestjs-config-manager';
+import { ConfigManagerModule } from '@nestjsplus/config';
 import { ConfigService } from './config.service';
 
 @Global()
@@ -77,7 +82,7 @@ export class ConfigModule {}
 ```
 
 This imports and _registers_ the `ConfigManagerModule`. The `register()` method is how you
-[configure the module](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options).
+[configure the module](https://github.com/nestjsplus/config/wiki/Module-configuration-options).
 In this example, we explicitly provide a full path to the `.env` file via the `useFile` configuration option.
 This is simple, but not terribly flexible. We'll explore more flexible options
 [below](#dynamic-env-file-location-example). When using a static file path with `useFile`, the path is relative
@@ -107,7 +112,7 @@ Your `ConfigService` might look like this:
 ```typescript
 // src/config/config.service.ts
 import { Injectable } from '@nestjs/common';
-import { ConfigManager } from 'nestjs-config-manager';
+import { ConfigManager } from '@nestjsplus/config';
 import * as Joi from '@hapi/joi';
 
 @Injectable()
@@ -151,7 +156,7 @@ export class ConfigService extends ConfigManager {
 Your `ConfigService` (you can choose any name you want) is a **derived
 class** that extends the `ConfigManager` class provided by the package. You **must**
 implement the `provideConfigSpec()` method. This is where you define your schema.
-Read [more about schemas here](https://github.com/johnbiundo/nestjs-config-manager/wiki/Schemas).
+Read [more about schemas here](https://github.com/nestjsplus/config/wiki/Schemas).
 
 With this in place, you can use your `ConfigService` anywhere in your project. For example, assuming
 a `.env` file like:
@@ -230,7 +235,7 @@ in _test_, `NODE_ENV`'s value would equal `'test'`.
 
 Based on this, you can use the `useEnv` method of configuring the `ConfigManagerModule`.
 The `useEnv` method is described in the
-[Module Configuration Options](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options#useenv)
+[Module Configuration Options](https://github.com/nestjsplus/config/wiki/Module-configuration-options#useenv)
 section, but a simple example is shown below.
 
 To accommodate this requirement, we'd modify the way we register the `ConfigManagerModule`
@@ -239,7 +244,7 @@ as follows, replacing `useFile` with `useEnv`:
 ```typescript
 // src/config/config.module.ts
 import { Module, Global } from '@nestjs/common';
-import { ConfigManagerModule } from 'nestjs-config-manager';
+import { ConfigManagerModule } from '@nestjsplus/config';
 import { ConfigService } from './config.service';
 
 @Global()
@@ -266,7 +271,7 @@ as shown below:
 ```typescript
 // src/config/config.module.ts
 import { Module, Global } from '@nestjs/common';
-import { ConfigManagerModule } from 'nestjs-config-manager';
+import { ConfigManagerModule } from '@nestjsplus/config';
 import { ConfigService } from './config.service';
 
 @Global()
@@ -292,14 +297,14 @@ require an even **more** flexible approach. To handle arbitrarily complex
 environments, a third method, `useFunction`, is available to write custom
 JavaScript code to generate the appropriate path and filename dynamically.
 This is covered in
-[Using a custom function](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options#usefunction).
+[Using a custom function](https://github.com/nestjsplus/config/wiki/Module-configuration-options#usefunction).
 
 ## What's next?
 
-- [How it works](https://github.com/johnbiundo/nestjs-config-manager/wiki/How-it-works)
-- [Module Configuration options](https://github.com/johnbiundo/nestjs-config-manager/wiki/Module-configuration-options)
-- [Schemas](https://github.com/johnbiundo/nestjs-config-manager/wiki/Schemas)
-- [API](https://github.com/johnbiundo/nestjs-config-manager/wiki/Api)
+- [How it works](https://github.com/nestjsplus/config/wiki/How-it-works)
+- [Module Configuration options](https://github.com/nestjsplus/config/wiki/Module-configuration-options)
+- [Schemas](https://github.com/nestjsplus/config/wiki/Schemas)
+- [API](https://github.com/nestjsplus/config/wiki/Api)
 
 ## Change Log
 
