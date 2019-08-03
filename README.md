@@ -14,7 +14,7 @@
 
 <div align="center">
     <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="License" />
-    <img src="https://badge.fury.io/js/nestjs-config-manager.svg" alt="npm version" height="18">
+    <img src="https://badge.fury.io/js/%40nestjsplus%2Fconfig.svg" alt="npm version" height="18">
   <a href="https://nestjs.com" target="_blank">
     <img src="https://img.shields.io/badge/built%20with-NestJs-red.svg" alt="Built with NestJS">
   </a>
