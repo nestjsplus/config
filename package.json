@@ -1,6 +1,6 @@
 {
-  "name": "nestjs-config-manager",
-  "version": "1.0.11",
+  "name": "@nestjsplus/config",
+  "version": "1.0.12",
   "description": "Flexible, Docker-friendly, Dotenv-based Configuration Module for NestJs",
   "main": "index.js",
   "scripts": {
@@ -36,9 +36,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/johnbiundo/nestjs-config-manager"
+    "url": "https://github.com/nestjsplus/config"
   },
-  "bugs": "https://github.com/johnbiundo/nestjs-config-manager/issues",
+  "bugs": "https://github.com/nestjsplus/config/issues",
   "peerDependencies": {
     "@nestjs/common": "^6.0.0"
   },
