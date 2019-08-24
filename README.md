@@ -49,7 +49,7 @@ You can [read more about **how NestJSConfigManager** works](https://github.com/n
 
 To install with npm (or run yarn equivalent):
 ```bash
-npm install @nestsjplus/config
+npm install @nestjsplus/config
 ```
 
 The package has one global Nest module (`ConfigManagerModule`), and one main class (`ConfigManager`) that you'll need to work with. The main idea is to create **your own** _ConfigService_ (in the examples, we'll call it `ConfigService`, but you can call it whatever you want). You probably want this in its own module (in the examples,
